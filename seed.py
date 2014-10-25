@@ -1,10 +1,11 @@
 import model
 import csv
+from datetime import datetime
 
 def load_users(session):
     # use u.user
-    with open('seed_data/shortuser.csv', 'rb') as csvfile:
-        userreader = csv.reader(csvfile, delimiter = "|", quotechar='|')
+    with open('seed_data/u.user', 'rb') as csvfile:
+        userreader = csv.reader(csvfile, delimiter = "|")
         for row in userreader:
             user = model.User(email=" ", password=" ", age=row[1], zipcode=row[4])
             session.add(user)
@@ -13,30 +14,35 @@ def load_users(session):
 
 def load_movies(session):
     # use u.item
-    with open('seed_data/shortitem.csv', 'rb') as csvfile:
-        userreader = csv.reader(csvfile, delimiter = "|", quotechar='|')
+    with open('seed_data/u.item', 'rb') as csvfile:
+        userreader = csv.reader(csvfile, delimiter = "|")
         for row in userreader:
             movie_title = row[1]
+            movie_title = movie_title.decode("latin-1")
             movie_title = movie_title.strip(movie_title[-6:len(movie_title)])
-            print movie_title
-            #movie = model.Movies(title=row[1], release_date=row[2], imdb_url=row[4])
-            # session.add(movie)
-            # session.commit()
+            date = row[2]
+            if date:
+                date = datetime.strptime(date, "%d-%b-%Y")
+                movie = model.Movies(title=movie_title, release_date=date, imdb_url=row[4])
+                session.add(movie)
+                session.commit()
+            else:
+                movie = model.Movies(title=movie_title, imdb_url=row[4])
+
 
 def load_ratings(session):
     # use u.data
-    with open('seed_data/shortdata.csv', 'rb') as csvfile:
-        userreader = csv.reader(csvfile, delimiter = " ", quotechar='|')
-        for row in userreader:
-            print row
-            user = model.User(email=" ", password=" ", age=row[1], zipcode=row[4])
-            session.add(user)
-            session.commit()
+    with open ("seed_data/u.data", "rb") as ratingsfile:       
+            for row in ratingsfile:
+                data = row.strip().split("\t")
+                data = model.Ratings(user_id=data[0], movie_id=data[1], rating=data[2])
+                session.add(data)
+                session.commit()
 
 def main(session):
     # You'll call each of the load_* functions with the session as an argument
     # load_users(session)
-      load_movies(session)
+      load_ratings(session)
 
 if __name__ == "__main__":
     s= model.connect()
