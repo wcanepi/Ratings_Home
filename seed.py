@@ -9,7 +9,7 @@ def load_users(session):
         for row in userreader:
             user = model.User(email=" ", password=" ", age=row[1], zipcode=row[4])
             session.add(user)
-            session.commit()
+    session.commit()
 
 
 def load_movies(session):
@@ -25,19 +25,19 @@ def load_movies(session):
                 date = datetime.strptime(date, "%d-%b-%Y")
                 movie = model.Movies(title=movie_title, release_date=date, imdb_url=row[4])
                 session.add(movie)
-                session.commit()
             else:
                 movie = model.Movies(title=movie_title, imdb_url=row[4])
+    session.commit()
 
 
 def load_ratings(session):
     # use u.data
-    with open ("seed_data/u.data", "rb") as ratingsfile:       
-            for row in ratingsfile:
-                data = row.strip().split("\t")
-                data = model.Ratings(user_id=data[0], movie_id=data[1], rating=data[2])
-                session.add(data)
-                session.commit()
+    f = open ("seed_data/u.data")       
+    for row in f:
+        data = row.strip().split("\t")
+        data = model.Ratings(user_id=data[0], movie_id=data[1], rating=data[2])
+        session.add(data)
+    session.commit()
 
 def main(session):
     # You'll call each of the load_* functions with the session as an argument
