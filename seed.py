@@ -19,14 +19,14 @@ def load_movies(session):
         for row in userreader:
             movie_title = row[1]
             movie_title = movie_title.decode("latin-1")
-            movie_title = movie_title.strip(movie_title[-6:len(movie_title)])
+            movie_title = movie_title.strip(movie_title[-7:len(movie_title)])
             date = row[2]
             if date:
                 date = datetime.strptime(date, "%d-%b-%Y")
-                movie = model.Movies(title=movie_title, release_date=date, imdb_url=row[4])
+                movie = model.Movie(title=movie_title, release_date=date, imdb_url=row[4])
                 session.add(movie)
             else:
-                movie = model.Movies(title=movie_title, imdb_url=row[4])
+                movie = model.Movie(title=movie_title, imdb_url=row[4])
     session.commit()
 
 
@@ -35,14 +35,15 @@ def load_ratings(session):
     f = open ("seed_data/u.data")       
     for row in f:
         data = row.strip().split("\t")
-        data = model.Ratings(user_id=data[0], movie_id=data[1], rating=data[2])
+        data = model.Rating(user_id=data[0], movie_id=data[1], rating=data[2])
         session.add(data)
     session.commit()
 
 def main(session):
     # You'll call each of the load_* functions with the session as an argument
     # load_users(session)
-      load_ratings(session)
+    load_movies(session)
+    load_ratings(session)
 
 if __name__ == "__main__":
     s= model.connect()
