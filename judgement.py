@@ -59,10 +59,21 @@ def process_login():
             print session['userid']
             return redirect("/")
 
-# @app.route("/viewusers", methods=["POST"])
-# def process_login():
-#     #user = model.User(
+@app.route("/viewusers")
+def viewusers():
 
+    v = model.session.query(model.User).all()
+    return render_template("user_list.html", user_list=v)
+
+
+
+#@app.route("/melon/<int:id>")
+@app.route("/userreviews/<int:id>")
+def viewreviews():
+
+    #for request.args['user.id']
+    #v = model.session.query(model.User).all()
+    return render_template("userreviews.html")#, user_list=v)
 
 @app.route("/sessionclear")
 def clear_session():

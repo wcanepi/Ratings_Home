@@ -1,5 +1,21 @@
 <html>
+<head>
+<style>
+.usertable {
+    height: 500px;
+    overflow: scroll;
+}
+</style>
+
+
+</head>    
+<div class = "usertable">
+<table>
+<TR><td>User #</td><td>Email </td> <td>AGE </td><td>Ratings|length</td></TR>
 {% for user in user_list %}
-<h2>User {{ user.id }}, age {{ user.age }} has {{ user.ratings|length }} ratings</h2>
+<tr><td><a href="userreviews/{{user.id}}">{{ user.id }}</a></td><td>{{ user.email }}</td><td>{{ user.age }}</td><td>{{ user.ratings|length }}</td></tr>
 {% endfor %}
+
+</table>
+</div>
 </html>
