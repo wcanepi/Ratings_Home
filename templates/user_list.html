@@ -13,7 +13,7 @@
 <table>
 <TR><td>User #</td><td>Email </td> <td>AGE </td><td>Ratings|length</td></TR>
 {% for user in user_list %}
-<tr><td><a href="userreviews/{{user.id}}">{{ user.id }}</a></td><td>{{ user.email }}</td><td>{{ user.age }}</td><td>{{ user.ratings|length }}</td></tr>
+<tr><td><a href="/userreviews/{{user.id}}">{{ user.id }}</a></td><td>{{ user.email }}</td><td>{{ user.age }}</td><td>{{ user.ratings|length }}</td></tr>
 {% endfor %}
 
 </table>

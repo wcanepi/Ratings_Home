@@ -62,18 +62,18 @@ def process_login():
 @app.route("/viewusers")
 def viewusers():
 
-    v = model.session.query(model.User).all()
+    v = model.session.query(model.User).limit(5).all()
     return render_template("user_list.html", user_list=v)
 
 
 
-#@app.route("/melon/<int:id>")
-@app.route("/userreviews/<int:id>")
-def viewreviews():
 
-    #for request.args['user.id']
-    #v = model.session.query(model.User).all()
-    return render_template("userreviews.html")#, user_list=v)
+@app.route("/userreviews/<id>")
+def viewreviews(id):
+    userid = id 
+    user = model.session.query(model.User).filter_by(id=userid).one()
+    ratings = user.ratings
+    return render_template("userreviews.html", user=user)
 
 @app.route("/sessionclear")
 def clear_session():
